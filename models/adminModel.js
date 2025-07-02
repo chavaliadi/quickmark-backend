@@ -568,8 +568,19 @@ const createSubject = async (subjectName, departmentId, year, section, semester)
         const result = await pool.query(query, [subjectName, departmentId, year, section, semester]);
         return result.rows[0];
     } catch (error) {
-        console.error('Error creating subject:', error);
-        throw new Error('Database insertion failed.');
+        console.error('Detailed error creating subject:', {
+            error: error.message,
+            code: error.code,
+            detail: error.detail,
+            hint: error.hint,
+            where: error.where,
+            schema: error.schema,
+            table: error.table,
+            column: error.column,
+            dataType: error.dataType,
+            constraint: error.constraint
+        });
+        throw new Error(`Database insertion failed: ${error.message}`);
     }
 };
 
