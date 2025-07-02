@@ -558,14 +558,14 @@ const getAllSubjects = async (page = 1, limit = 10, searchTerm = '', filterYear 
 };
 
 // Create subject
-const createSubject = async (subjectName, departmentId, year, section, semester) => {
+const createSubject = async (subjectName, subjectCode, departmentId, year, section, semester) => {
     const query = `
-        INSERT INTO subjects (subject_name, department_id, year, section, semester)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING subject_id, subject_name, department_id, year, section, semester;
+        INSERT INTO subjects (subject_name, subject_code, department_id, year, section, semester)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING subject_id, subject_name, subject_code, department_id, year, section, semester;
     `;
     try {
-        const result = await pool.query(query, [subjectName, departmentId, year, section, semester]);
+        const result = await pool.query(query, [subjectName, subjectCode, departmentId, year, section, semester]);
         return result.rows[0];
     } catch (error) {
         console.error('Detailed error creating subject:', {
